@@ -4,6 +4,7 @@ import pickle
 import pandas as pd
 import sys
 import importlib
+import numpy as np
 from typing import Dict, Any
 from collections import deque
 from datetime import datetime
@@ -37,6 +38,18 @@ if not _MODEL_PATH.exists():
         _MODEL_PATH = root_fallback
 
 try:
+    # Provide compatibility shim for older pickles that reference
+    # the historical private module name `numpy._core` (some models
+    # serialized with older numpy versions expect that module).
+    # Map it to the current `numpy.core` module so unpickling succeeds.
+    try:
+        if 'numpy._core' not in sys.modules:
+            sys.modules['numpy._core'] = getattr(np, 'core', np)
+    except Exception:
+        # If numpy isn't importable here for some reason, let pickle raise
+        # the original error to surface the underlying problem.
+        pass
+
     with open(_MODEL_PATH, "rb") as f:
         # Suppress sklearn unpickle/version warnings only during model load
         with warnings.catch_warnings():
