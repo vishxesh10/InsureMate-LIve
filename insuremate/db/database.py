@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, String, Float, Boolean, DateTime, Text, func
 from sqlalchemy.orm import sessionmaker, declarative_base
 from datetime import datetime
-from Components.core.config import DATABASE_URL, get_sqlalchemy_connect_args
+from insuremate.core.config import DATABASE_URL, get_sqlalchemy_connect_args
 
 # Create engine using environment-aware config
 connect_args = get_sqlalchemy_connect_args()

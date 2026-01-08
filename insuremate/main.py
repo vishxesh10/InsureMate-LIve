@@ -12,10 +12,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
 # Import routers
-from Components.api.predict import router as predict_router
-from Components.api.results import router as results_router
-from Components.api.health import router as health_router
-from Components.db.database import SessionLocal, engine, Base
+from insuremate.api.predict import router as predict_router
+from insuremate.api.results import router as results_router
+from insuremate.api.health import router as health_router
+from insuremate.db.database import SessionLocal, engine, Base
 
 # Basic structured logging setup
 logging.basicConfig(

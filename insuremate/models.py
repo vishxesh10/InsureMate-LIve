@@ -2,7 +2,7 @@
 Pydantic models for InsureMate Insurance Premium Prediction System
 """
 
-from pydantic import BaseModel, computed_field, ConfigDict
+from pydantic import BaseModel, computed_field
 from typing import Literal, Optional
 from datetime import datetime
 
@@ -18,7 +18,8 @@ class Userinput(BaseModel):
     occupation: Literal['retired', 'freelancer', 'student', 'government_job',
        'business_owner', 'unemployed', 'private_job']
     
-    model_config = ConfigDict(validate_assignment=True)
+    class Config:
+        validate_assignment = True
     
     def __init__(self, **data):
         super().__init__(**data)
@@ -111,7 +112,8 @@ class PredictionResultSchema(BaseModel):
     predicted_category: str
     created_at: str
     
-    model_config = ConfigDict(from_attributes=True)
+    class Config:
+        from_attributes = True
 
 
 class ResultsResponse(BaseModel):

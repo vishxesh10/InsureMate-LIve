@@ -1,7 +1,7 @@
 """Prediction endpoint router."""
 from fastapi import APIRouter
-from Components.models import Userinput
-from Components.services.predict import predict_from_user
+from insuremate.models import Userinput
+from insuremate.services.predict import predict_from_user
 
 router = APIRouter()
 

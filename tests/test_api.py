@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from Components.main import app
+from insuremate.main import app
 
 client = TestClient(app)
 

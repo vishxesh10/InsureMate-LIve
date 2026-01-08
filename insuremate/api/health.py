@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
-from Components.db import database
+from insuremate.db import database
 
 router = APIRouter()
 

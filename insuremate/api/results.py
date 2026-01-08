@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from Components.db.database import get_all_results, get_results_by_city, get_results_by_category
-from Components.services.predict import get_recent_predictions
+from insuremate.db.database import get_all_results, get_results_by_city, get_results_by_category
+from insuremate.services.predict import get_recent_predictions
 
 router = APIRouter()
 
