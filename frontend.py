@@ -42,7 +42,15 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # API Configuration
-DEFAULT_API_BASE = os.getenv("API_BASE_URL", "http://127.0.0.1:8000")
+# Prefer environment variable, then Streamlit secrets, then local default.
+DEFAULT_API_BASE = os.getenv("API_BASE_URL")
+if not DEFAULT_API_BASE:
+    try:
+        DEFAULT_API_BASE = st.secrets.get("API_BASE_URL")
+    except Exception:
+        DEFAULT_API_BASE = None
+if not DEFAULT_API_BASE:
+    DEFAULT_API_BASE = "http://127.0.0.1:8000"
 API_BASE_URL = st.sidebar.text_input(
     "API Base URL",
     value=DEFAULT_API_BASE,
