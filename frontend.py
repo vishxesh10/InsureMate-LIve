@@ -1,6 +1,7 @@
 """
 InsureMate Frontend - Streamlit UI for Insurance Premium Prediction
 """
+import os
 import streamlit as st
 import requests
 import json
@@ -41,10 +42,11 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # API Configuration
+DEFAULT_API_BASE = os.getenv("API_BASE_URL", "http://127.0.0.1:8000")
 API_BASE_URL = st.sidebar.text_input(
     "API Base URL",
-    value="http://127.0.0.1:8000",
-    help="Enter the backend API server URL"
+    value=DEFAULT_API_BASE,
+    help="Enter the backend API server URL (or set API_BASE_URL env var in deployment)"
 )
 
 # Header
