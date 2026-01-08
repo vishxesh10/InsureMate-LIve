@@ -29,6 +29,5 @@ def results_category(category: str):
 
 @router.get("/results/recent")
 def results_recent():
-    """Return a short in-memory recent predictions log (most recent first)."""
     res = get_recent_predictions()
     return {"total_results": len(res), "results": res}

@@ -7,16 +7,17 @@ router = APIRouter()
 
 @router.get("/health", tags=["health"])
 async def health_check():
-    """Health check endpoint that verifies database connectivity."""
+    import datetime
+    
     try:
         # Check if database is responsive
         with database.SessionLocal() as session:
             session.execute(text("SELECT 1"))
             
         return {
-            "status": "healthy",
+            "status": "ok",
             "database": "connected",
-            "timestamp": "2025-11-28T11:15:30Z"
+            "timestamp": datetime.datetime.now().isoformat()
         }
     except SQLAlchemyError as e:
         raise HTTPException(
@@ -25,7 +26,6 @@ async def health_check():
                 "status": "unhealthy",
                 "database": "disconnected",
                 "error": str(e),
-                "timestamp": "2025-11-28T11:15:30Z"
+                "timestamp": datetime.datetime.now().isoformat()
             }
         )
-    return {"status": status, "database": db_ok}

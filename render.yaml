@@ -1,0 +1,41 @@
+services:
+  # 1. PostgreSQL Database
+  - type: psql
+    name: insuremate-db
+    plan: free
+    environment: production
+    postgresMajorVersion: 16
+
+  # 2. Backend (FastAPI)
+  - type: web
+    name: insuremate-backend
+    runtime: python
+    plan: free
+    region: singapore # Optional: choose closest to you
+    buildCommand: "./build.sh"
+    startCommand: "uvicorn insuremate.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: DATABASE_URL
+        fromService:
+          type: psql
+          name: insuremate-db
+          property: connectionString
+      - key: PYTHON_VERSION
+        value: 3.11.9
+
+  # 3. Frontend (Streamlit)
+  - type: web
+    name: insuremate-frontend
+    runtime: python
+    plan: free
+    region: singapore
+    buildCommand: "./build.sh"
+    startCommand: "streamlit run frontend.py --server.port $PORT --server.address 0.0.0.0"
+    envVars:
+      - key: API_BASE_URL
+        fromService:
+          type: web
+          name: insuremate-backend
+          property: url
+      - key: PYTHON_VERSION
+        value: 3.11.9

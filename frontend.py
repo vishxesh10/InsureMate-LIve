@@ -7,7 +7,6 @@ import requests
 import json
 from datetime import datetime
 
-# Page configuration
 st.set_page_config(
     page_title="InsureMate - Premium Predictor",
     page_icon="🏥",
@@ -15,7 +14,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Styling
 st.markdown("""
 <style>
     .main {
@@ -41,8 +39,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# API Configuration
-# Prefer environment variable, then Streamlit secrets, then local default.
+
 DEFAULT_API_BASE = os.getenv("API_BASE_URL")
 if not DEFAULT_API_BASE:
     try:
@@ -57,16 +54,11 @@ API_BASE_URL = st.sidebar.text_input(
     help="Enter the backend API server URL (or set API_BASE_URL env var in deployment)"
 )
 
-# Header
 st.markdown("<h1 class='header'>🏥 InsureMate - Insurance Premium Predictor</h1>", unsafe_allow_html=True)
 st.markdown("---")
 
-# Tabs
 tab1, tab2, tab3 = st.tabs(["🔮 Predict Premium", "📊 Results", "❤️ Health Check"])
 
-# ============================================
-# TAB 1: PREDICT PREMIUM
-# ============================================
 with tab1:
     st.subheader("Enter Your Details")
     
@@ -99,7 +91,6 @@ with tab1:
         ]
         occupation = st.selectbox("Occupation", options=occupation_options)
     
-    # Predict Button
     if st.button("🔮 Predict Premium Category", use_container_width=True, type="primary"):
         try:
             with st.spinner("Processing your prediction..."):
@@ -132,7 +123,6 @@ with tab1:
                     with col3:
                         st.metric("Result ID", result["result_id"])
                     
-                    # Display additional info
                     st.markdown("<div class='prediction-box'>", unsafe_allow_html=True)
                     st.markdown(f"**Status**: {result['message']}")
                     st.markdown(f"**Predicted at**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
@@ -147,9 +137,7 @@ with tab1:
         except Exception as e:
             st.error(f"❌ Error: {str(e)}")
 
-# ============================================
-# TAB 2: RESULTS
-# ============================================
+
 with tab2:
     st.subheader("Prediction Results")
     
@@ -164,7 +152,6 @@ with tab2:
                     st.success(f"Total Results: {data['total_results']}")
                     
                     if data['results']:
-                        # Convert to table format
                         results_data = []
                         for result in data['results']:
                             results_data.append({
@@ -232,9 +219,7 @@ with tab2:
     except Exception as e:
         st.error(f"❌ Error: {str(e)}")
 
-# ============================================
-# TAB 3: HEALTH CHECK
-# ============================================
+
 with tab3:
     st.subheader("API Health Status")
     
@@ -260,9 +245,7 @@ with tab3:
         except Exception as e:
             st.error(f"❌ Error: {str(e)}")
 
-# ============================================
-# SIDEBAR INFO
-# ============================================
+
 with st.sidebar:
     st.markdown("---")
     st.subheader("ℹ️ About")

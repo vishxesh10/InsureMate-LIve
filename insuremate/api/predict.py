@@ -1,4 +1,3 @@
-"""Prediction endpoint router."""
 from fastapi import APIRouter
 from insuremate.models import Userinput
 from insuremate.services.predict import predict_from_user

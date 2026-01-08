@@ -3,28 +3,23 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 from datetime import datetime
 from insuremate.core.config import DATABASE_URL, get_sqlalchemy_connect_args
 
-# Create engine using environment-aware config
 connect_args = get_sqlalchemy_connect_args()
 
 engine = create_engine(
     DATABASE_URL,
-    connect_args=connect_args if connect_args else None
+    connect_args=connect_args if connect_args is not None else {}
 )
 
-# Create session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Create base class for ORM models
 Base = declarative_base()
 
 
-# ORM Model for storing user prediction results
 class PredictionResult(Base):
     __tablename__ = "prediction_results"
 
     id = Column(Integer, primary_key=True, index=True)
 
-    # User input data
     age = Column(Integer, nullable=False)
     weight = Column(Float, nullable=False)
     height = Column(Float, nullable=False)
@@ -33,27 +28,22 @@ class PredictionResult(Base):
     city = Column(String, nullable=False)
     occupation = Column(String, nullable=False)
 
-    # Computed fields
     bmi = Column(Float, nullable=False)
     lifestyle_risk = Column(String, nullable=False)
     age_group = Column(String, nullable=False)
     city_tier = Column(Integer, nullable=False)
 
-    # Prediction result
     predicted_category = Column(String, nullable=False)
 
-    # Metadata
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
     def __repr__(self):
         return f"<PredictionResult(id={self.id}, city={self.city}, predicted_category={self.predicted_category})>"
 
 
-# Create all tables
 Base.metadata.create_all(bind=engine)
 
 
-# Helper function to get database session
 def get_db():
     db = SessionLocal()
     try:
@@ -62,7 +52,6 @@ def get_db():
         db.close()
 
 
-# Helper function to save a prediction result
 def save_prediction_result(user_input, predicted_category):
     db = SessionLocal()
     try:
@@ -88,7 +77,6 @@ def save_prediction_result(user_input, predicted_category):
         db.close()
 
 
-# Helper function to retrieve all results
 def get_all_results():
     db = SessionLocal()
     try:
@@ -98,7 +86,6 @@ def get_all_results():
         db.close()
 
 
-# Helper function to retrieve results by city
 def get_results_by_city(city: str):
     db = SessionLocal()
     try:
@@ -108,7 +95,6 @@ def get_results_by_city(city: str):
         db.close()
 
 
-# Helper function to retrieve results by premium category
 def get_results_by_category(category: str):
     db = SessionLocal()
     try:
@@ -118,7 +104,6 @@ def get_results_by_category(category: str):
         db.close()
 
 
-# Helper function to get statistics
 def get_statistics():
     db = SessionLocal()
     try:

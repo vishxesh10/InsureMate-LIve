@@ -1,30 +1,21 @@
-"""Package entrypoint for running the InsureMate app with uvicorn.
-
-This file imports and configures the FastAPI application with all routes and middleware.
-
-Run with:
-    uvicorn insuremate.main:app --host 127.0.0.1 --port 8000 --reload
-"""
-
 import logging
+import os
+import uvicorn
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
-# Import routers
 from insuremate.api.predict import router as predict_router
 from insuremate.api.results import router as results_router
 from insuremate.api.health import router as health_router
 from insuremate.db.database import SessionLocal, engine, Base
 
-# Basic structured logging setup
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)s %(name)s %(message)s",
 )
 logger = logging.getLogger("insuremate")
 
-# Create database tables
 logger.info("Creating database tables...")
 try:
     Base.metadata.create_all(bind=engine)
@@ -33,7 +24,6 @@ except Exception as e:
     logger.error(f"Failed to create database tables: {e}")
     raise
 
-# Create FastAPI app
 app = FastAPI(
     title="InsureMate API",
     description="API for InsureMate Insurance Premium Prediction System",
@@ -43,24 +33,19 @@ app = FastAPI(
     openapi_url="/api/openapi.json"
 )
 
-# Set up CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with your frontend URL
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Include API routers
-# Health router already exposes /health
 app.include_router(health_router)
 
-# Frontend expects these at /predict and /results (no /api prefix)
 app.include_router(predict_router, tags=["predictions"])
 app.include_router(results_router, tags=["results"])
 
-# Root endpoint
 @app.get("/")
 async def root():
     return {
@@ -73,7 +58,6 @@ async def root():
         }
     }
 
-# Database health check endpoint
 @app.get("/api/health/db")
 async def db_health_check():
     try:
@@ -90,11 +74,6 @@ async def db_health_check():
 logger.info("InsureMate app initialized")
 
 if __name__ == "__main__":
-    import os
-    import uvicorn
-
-    # Use the platform-provided PORT when available (e.g., Render, Heroku).
-    # Fallback to 8000 for local development.
     port = int(os.getenv("PORT", "8000"))
     logger.info(f"Starting uvicorn on 0.0.0.0:{port}")
     uvicorn.run(app, host="0.0.0.0", port=port)
