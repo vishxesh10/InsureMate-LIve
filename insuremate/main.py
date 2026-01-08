@@ -90,5 +90,11 @@ async def db_health_check():
 logger.info("InsureMate app initialized")
 
 if __name__ == "__main__":
+    import os
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+
+    # Use the platform-provided PORT when available (e.g., Render, Heroku).
+    # Fallback to 8000 for local development.
+    port = int(os.getenv("PORT", "8000"))
+    logger.info(f"Starting uvicorn on 0.0.0.0:{port}")
+    uvicorn.run(app, host="0.0.0.0", port=port)
