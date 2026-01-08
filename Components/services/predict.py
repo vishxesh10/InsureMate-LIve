@@ -8,7 +8,6 @@ from typing import Dict, Any
 from collections import deque
 from datetime import datetime
 import warnings
-from sklearn.exceptions import InconsistentVersionWarning
 
 # Add compatibility for missing _RemainderColsList
 import sklearn.compose._column_transformer
@@ -27,12 +26,6 @@ from Components.core.config import MODEL_PATH
 # In-memory recent predictions (simple audit log)
 _RECENT = deque(maxlen=3)
 
-# Suppress scikit-learn version mismatch warning raised during unpickling
-warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
-# Additional, message-level suppression for sklearn unpickle messages (broad but useful for CI/test noise)
-warnings.filterwarnings("ignore", message="Trying to unpickle estimator", category=Warning)
-warnings.filterwarnings("ignore", module="sklearn.*")
-
 # Prefer the env-driven MODEL_PATH from config, fallback to package/root locations
 _MODEL_PATH = Path(MODEL_PATH)
 if not _MODEL_PATH.exists():
@@ -47,8 +40,7 @@ try:
     with open(_MODEL_PATH, "rb") as f:
         # Suppress sklearn unpickle/version warnings only during model load
         with warnings.catch_warnings():
-            warnings.simplefilter("ignore", InconsistentVersionWarning)
-            warnings.simplefilter("ignore", message="Trying to unpickle estimator")
+            warnings.simplefilter("ignore", category=Warning)
             _MODEL = pickle.load(f)
     print(f"Model loaded successfully from {_MODEL_PATH}")
 except AttributeError as e:

@@ -1,5 +1,6 @@
 from fastapi import APIRouter
-from insuremate.db.database import get_all_results, get_results_by_city, get_results_by_category
+from Components.db.database import get_all_results, get_results_by_city, get_results_by_category
+from Components.services.predict import get_recent_predictions
 
 router = APIRouter()
 
@@ -24,3 +25,10 @@ def results_city(city: str):
 def results_category(category: str):
     res = get_results_by_category(category)
     return {"category": category, "total_results": len(res), "results": _format_results(res)}
+
+
+@router.get("/results/recent")
+def results_recent():
+    """Return a short in-memory recent predictions log (most recent first)."""
+    res = get_recent_predictions()
+    return {"total_results": len(res), "results": res}

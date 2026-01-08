@@ -21,8 +21,8 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 
-from insuremate.core.config import DATABASE_URL
-from insuremate.db.database import Base
+from Components.core.config import DATABASE_URL
+from Components.db.database import Base
 
 config.set_main_option('sqlalchemy.url', DATABASE_URL)
 

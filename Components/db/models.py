@@ -3,8 +3,8 @@ from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from datetime import datetime
 
-from insuremate.db.database import Base
-from insuremate.auth.models import UserRole
+from Components.db.database import Base
+from Components.auth.models import UserRole
 
 class User(Base):
     __tablename__ = "users"
@@ -26,7 +26,7 @@ class User(Base):
         return f"<User(id={self.id}, email={self.email}, role={self.role})>"
 
 # Update the PredictionResult model to include user relationship
-from insuremate.db.database import PredictionResult as PredictionResultBase
+from Components.db.database import PredictionResult as PredictionResultBase
 
 class PredictionResult(PredictionResultBase):
     __tablename__ = "prediction_results"
