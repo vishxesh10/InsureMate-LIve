@@ -11,8 +11,8 @@ services:
     name: insuremate-backend
     runtime: python
     plan: free
-    region: singapore # Optional: choose closest to you
-    buildCommand: "./build.sh"
+    region: singapore
+    buildCommand: "pip install -r requirements.txt"
     startCommand: "uvicorn insuremate.main:app --host 0.0.0.0 --port $PORT"
     envVars:
       - key: DATABASE_URL
@@ -29,7 +29,7 @@ services:
     runtime: python
     plan: free
     region: singapore
-    buildCommand: "./build.sh"
+    buildCommand: "pip install -r requirements.txt"
     startCommand: "streamlit run frontend.py --server.port $PORT --server.address 0.0.0.0"
     envVars:
       - key: API_BASE_URL
