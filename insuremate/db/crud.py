@@ -1,56 +1,6 @@
-from sqlalchemy import create_engine, Column, Integer, String, Float, Boolean, DateTime, Text, func
-from sqlalchemy.orm import sessionmaker, declarative_base
-from datetime import datetime
-from insuremate.core.config import DATABASE_URL, get_sqlalchemy_connect_args
-
-connect_args = get_sqlalchemy_connect_args()
-
-engine = create_engine(
-    DATABASE_URL,
-    connect_args=connect_args if connect_args is not None else {}
-)
-
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-Base = declarative_base()
-
-
-class PredictionResult(Base):
-    __tablename__ = "prediction_results"
-
-    id = Column(Integer, primary_key=True, index=True)
-
-    age = Column(Integer, nullable=False)
-    weight = Column(Float, nullable=False)
-    height = Column(Float, nullable=False)
-    income_lpa = Column(Float, nullable=False)
-    smoker = Column(Boolean, nullable=False)
-    city = Column(String, nullable=False)
-    occupation = Column(String, nullable=False)
-
-    bmi = Column(Float, nullable=False)
-    lifestyle_risk = Column(String, nullable=False)
-    age_group = Column(String, nullable=False)
-    city_tier = Column(Integer, nullable=False)
-
-    predicted_category = Column(String, nullable=False)
-
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-
-    def __repr__(self):
-        return f"<PredictionResult(id={self.id}, city={self.city}, predicted_category={self.predicted_category})>"
-
-
-Base.metadata.create_all(bind=engine)
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
+from sqlalchemy import func
+from insuremate.db.session import SessionLocal
+from insuremate.db.models import PredictionResult
 
 def save_prediction_result(user_input, predicted_category):
     db = SessionLocal()

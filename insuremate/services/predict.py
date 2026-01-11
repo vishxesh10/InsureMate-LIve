@@ -20,8 +20,8 @@ class _RemainderColsList(list):
 # Make the class available in the module
 setattr(sklearn.compose._column_transformer, '_RemainderColsList', _RemainderColsList)
 
-from insuremate.models import Userinput
-from insuremate.db.database import save_prediction_result
+from insuremate.schemas import Userinput
+from insuremate.db.crud import save_prediction_result
 from insuremate.core.config import MODEL_PATH
 
 # In-memory recent predictions (simple audit log)

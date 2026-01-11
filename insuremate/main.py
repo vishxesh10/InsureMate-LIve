@@ -8,7 +8,10 @@ from sqlalchemy import text
 from insuremate.api.predict import router as predict_router
 from insuremate.api.results import router as results_router
 from insuremate.api.health import router as health_router
-from insuremate.db.database import SessionLocal, engine, Base
+from insuremate.db.session import SessionLocal, engine
+from insuremate.db.base import Base
+# Import models to register tables with Base
+import insuremate.db.models
 
 logging.basicConfig(
     level=logging.INFO,
