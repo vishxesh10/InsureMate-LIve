@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Exit on error
 set -e
+echo "Starting Render Build Process..."
 
 echo "=== DIAGNOSTIC START ==="
 echo "Current Directory: $(pwd)"
