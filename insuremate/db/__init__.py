@@ -1,11 +1,10 @@
 """DB helpers package."""
 
-from .session import SessionLocal, engine
+from .session import SessionLocal, engine, get_db
 from .base import Base
 from .models import PredictionResult
 from .crud import (
     save_prediction_result,
-    get_db,
     get_all_results,
     get_results_by_city,
     get_results_by_category,
