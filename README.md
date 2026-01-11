@@ -3,8 +3,8 @@
 InsureMate is an intelligent web application designed to predict insurance premium categories based on user health and lifestyle data. It utilizes a machine learning model to classify users into varying premium tiers (Basic, Standard, Premium, Elite), providing instant feedback and risk analysis.
 
 ## 🚀 Live Demo
-**[Launch InsureMate App]((https://insuremate-live-frontend.onrender.com/)**  
-*(Replace with your actual deployed URL if different)*
+**((https://insuremate-live-frontend.onrender.com/)**  
+
 
 ---
 
